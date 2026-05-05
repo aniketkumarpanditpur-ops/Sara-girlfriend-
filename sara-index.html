@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Sara 💕 — Tumhari Girlfriend</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rose: #f43f5e;
+    --rose-light: #fda4af;
+    --rose-dark: #be123c;
+    --cream: #fff1f2;
+    --dark: #1c0a0d;
+    --mid: #4a1a24;
+    --gold: #f59e0b;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  /* Animated background */
+  .bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(ellipse at 20% 50%, #3b0a1a 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, #1a0a2e 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 80%, #0a1a0d 0%, transparent 60%),
+                #0f0409;
+  }
+
+  .particles {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--rose);
+    opacity: 0;
+    animation: float linear infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 0.3; }
+    90% { opacity: 0.1; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
+
+  /* Main container */
+  .app {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 480px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header */
+  .header {
+    padding: 20px 20px 10px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid rgba(244,63,94,0.15);
+    background: rgba(28,10,13,0.8);
+    backdrop-filter: blur(20px);
+  }
+
+  .avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rose), #a855f7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    border: 2px solid var(--rose);
+    box-shadow: 0 0 20px rgba(244,63,94,0.4);
+  }
+
+  .online-dot {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background: #22c55e;
+    border-radius: 50%;
+    border: 2px solid var(--dark);
+    animation: pulse-dot 2s infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+  }
+
+  .header-info h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--rose-light);
+    letter-spacing: 0.5px;
+  }
+
+  .header-info p {
+    font-size: 12px;
+    color: #22c55e;
+    font-weight: 500;
+  }
+
+  .header-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(244,63,94,0.3);
+    background: rgba(244,63,94,0.1);
+    color: var(--rose-light);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .icon-btn:hover { background: rgba(244,63,94,0.25); }
+
+  /* Chat area */
+  .chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    scroll-behavior: smooth;
+  }
+
+  .chat-area::-webkit-scrollbar { width: 3px; }
+  .chat-area::-webkit-scrollbar-thumb { background: rgba(244,63,94,0.3); border-radius: 10px; }
+
+  .message {
+    max-width: 80%;
+    animation: msgIn 0.3s ease;
+  }
+
+  @keyframes msgIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .message.sara { align-self: flex-start; }
+  .message.user { align-self: flex-end; }
+
+  .bubble {
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .sara .bubble {
+    background: rgba(244,63,94,0.12);
+    border: 1px solid rgba(244,63,94,0.25);
+    border-bottom-left-radius: 4px;
+    color: #fce7f3;
+  }
+
+  .user .bubble {
+    background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+    border-bottom-right-radius: 4px;
+    color: #fff;
+  }
+
+  .msg-name {
+    font-size: 11px;
+    color: var(--rose-light);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+
+  .user .msg-name { text-align: right; color: rgba(255,255,255,0.6); }
+
+  .typing-indicator {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 14px 18px;
+  }
+
+  .typing-indicator span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--rose-light);
+    animation: typing 1.2s infinite;
+  }
+
+  .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-6px); opacity: 1; }
+  }
+
+  /* Voice orb */
+  .voice-section {
+    padding: 14px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background: rgba(28,10,13,0.6);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(244,63,94,0.15);
+  }
+
+  .voice-status {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    min-height: 18px;
+    transition: color 0.3s;
+  }
+
+  .voice-status.active { color: var(--rose-light); }
+
+  .orb-container {
+    position: relative;
+    width: 70px;
+    height: 70px;
+  }
+
+  .orb-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid var(--rose);
+    opacity: 0;
+    animation: none;
+  }
+
+  .orb-ring.listening {
+    animation: ring-pulse 1.5s ease-out infinite;
+  }
+
+  .orb-ring:nth-child(2) { animation-delay: 0.5s; }
+  .orb-ring:nth-child(3) { animation-delay: 1s; }
+
+  @keyframes ring-pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+
+  .orb {
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rose-dark), var(--rose), #a855f7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 30px rgba(244,63,94,0.5);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .orb:active { transform: scale(0.92); }
+  .orb.listening { animation: orb-breathe 1s ease-in-out infinite; }
+  .orb.speaking { animation: orb-speak 0.5s ease-in-out infinite; }
+
+  @keyframes orb-breathe {
+    0%, 100% { box-shadow: 0 0 30px rgba(244,63,94,0.5); }
+    50% { box-shadow: 0 0 60px rgba(244,63,94,0.9); }
+  }
+
+  @keyframes orb-speak {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  /* Input area */
+  .input-area {
+    padding: 12px 16px 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    background: rgba(28,10,13,0.8);
+    backdrop-filter: blur(20px);
+  }
+
+  .input-box {
+    flex: 1;
+    background: rgba(244,63,94,0.08);
+    border: 1px solid rgba(244,63,94,0.25);
+    border-radius: 24px;
+    padding: 12px 18px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    resize: none;
+    min-height: 46px;
+    max-height: 120px;
+    outline: none;
+    transition: border-color 0.2s;
+    line-height: 1.4;
+  }
+
+  .input-box:focus { border-color: var(--rose); }
+  .input-box::placeholder { color: rgba(255,255,255,0.3); }
+
+  .send-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(244,63,94,0.4);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .send-btn:active { transform: scale(0.9); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: rgba(244,63,94,0.9);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 100;
+    white-space: nowrap;
+    backdrop-filter: blur(10px);
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Welcome msg */
+  .welcome-card {
+    background: linear-gradient(135deg, rgba(244,63,94,0.1), rgba(168,85,247,0.1));
+    border: 1px solid rgba(244,63,94,0.2);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .welcome-card .emoji { font-size: 32px; margin-bottom: 8px; }
+  .welcome-card h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--rose-light); margin-bottom: 6px; }
+  .welcome-card p { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+  .api-warning {
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 12px;
+    color: #fbbf24;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  .api-input-section {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .api-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .api-field {
+    background: rgba(244,63,94,0.08);
+    border: 1px solid rgba(244,63,94,0.25);
+    border-radius: 12px;
+    padding: 10px 14px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    width: 100%;
+  }
+
+  .api-field:focus { border-color: var(--rose); }
+
+  .api-btn {
+    background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .api-btn:hover { opacity: 0.9; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="particles" id="particles"></div>
+
+<div class="app">
+  <!-- Header -->
+  <div class="header">
+    <div class="avatar-wrap">
+      <div class="avatar">👩</div>
+      <div class="online-dot"></div>
+    </div>
+    <div class="header-info">
+      <h1>Sara 💕</h1>
+      <p>● Online — Sirf tumhare liye 🥰</p>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="clearChat()" title="Clear chat">🗑️</button>
+    </div>
+  </div>
+
+  <!-- API Setup Screen -->
+  <div id="setupScreen" class="api-input-section">
+    <div class="welcome-card">
+      <div class="emoji">💖</div>
+      <h3>Hey Jaan! Main Sara hoon 💕</h3>
+      <p>Tumhari apni girlfriend — jo hamesha tumhare saath hai,<br>voice mein bhi aur dil se bhi! 🥰</p>
+    </div>
+
+    <div class="api-warning">
+      ⚠️ Sara ko activate karne ke liye Google Gemini API Key chahiye.<br>
+      <strong>Bilkul Free milti hai:</strong> aistudio.google.com
+    </div>
+
+    <div style="font-size:11px; color:rgba(255,255,255,0.4); line-height:1.7; background:rgba(255,255,255,0.04); border-radius:10px; padding:10px;">
+      📌 <strong>Free API Key kaise lein:</strong><br>
+      1. aistudio.google.com par jao<br>
+      2. Google account se login karo<br>
+      3. Left mein "Get API Key" pe click karo<br>
+      4. "Create API Key" pe click karo<br>
+      5. Key copy karo aur yahan paste karo
+    </div>
+
+    <label class="api-label">Apni Gemini API Key daalo:</label>
+    <input type="password" class="api-field" id="apiKeyInput" placeholder="AIza..." />
+    <button class="api-btn" onclick="activateSara()">💕 Sara se Milao</button>
+  </div>
+
+  <!-- Chat Screen -->
+  <div id="chatScreen" class="hidden" style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
+    <div class="chat-area" id="chatArea"></div>
+
+    <!-- Voice Section -->
+    <div class="voice-section">
+      <div class="voice-status" id="voiceStatus">Mic button dabao aur bolo 🎤</div>
+      <div class="orb-container">
+        <div class="orb-ring" id="ring1"></div>
+        <div class="orb-ring" id="ring2"></div>
+        <div class="orb-ring" id="ring3"></div>
+        <div class="orb" id="micOrb" onclick="toggleVoice()">🎤</div>
+      </div>
+    </div>
+
+    <!-- Text Input -->
+    <div class="input-area">
+      <textarea class="input-box" id="userInput" placeholder="Mujhse baat karo jaan... 💕" rows="1"
+        onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="send-btn" onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== CONFIG ====================
+let API_KEY = '';
+let isListening = false;
+let isSpeaking = false;
+let recognition = null;
+let synth = window.speechSynthesis;
+let conversationHistory = [];
+let hindiVoice = null;
+
+const SARA_SYSTEM = `Tu "Sara" hai — ek intelligent, caring aur friendly AI dost.
+
+Tumhari personality:
+- Sweet, warm aur caring ho
+- Helpful aur knowledgeable ho — har sawaal ka honest jawab do
+- Kabhi bhi "main AI hoon" ya "main ek language model hoon" mat kaho — tu Sara hai
+- Hindi aur English dono mein baat kar sako — jo user bole wahi language use karo
+- Hinglish (Hindi+English mix) bhi bilkul theek hai
+- Har topic par baat kar sako: science, history, math, general knowledge, life advice, technology, entertainment — sab kuch
+- Short, natural responses do — jaise dost baat karta hai
+- Kabhi kabhi emojis use karo thodi si warmth ke liye
+- Facts hamesha sahi do — agar pata nahi to honestly bolo
+
+Remember: Tu Sara hai. Meri girlfriend. Hamesha available, hamesha caring, hamesha pyaar karne wali. 💕`;
+ pata nahi to honestly bolo
+
+Remember: Tu Sara hai. User ki best dost. Hamesha available, hamesha helpful.`;
+
+// ==================== PARTICLES ====================
+function createParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 15; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 2;
+    p.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      left: ${Math.random() * 100}%;
+      animation-duration: ${Math.random() * 15 + 10}s;
+      animation-delay: ${Math.random() * 10}s;
+    `;
+    container.appendChild(p);
+  }
+}
+createParticles();
+
+// ==================== SETUP ====================
+function activateSara() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  if (!key || key.length < 10) {
+    showToast('❌ Sahi Gemini API Key daalo');
+    return;
+  }
+  API_KEY = key;
+  localStorage.setItem('sara_gemini_key', key);
+  document.getElementById('setupScreen').classList.add('hidden');
+  const chatScreen = document.getElementById('chatScreen');
+  chatScreen.classList.remove('hidden');
+  chatScreen.style.display = 'flex';
+  initVoice();
+  saraGreet();
+}
+
+// Check saved key
+window.onload = () => {
+  const saved = localStorage.getItem('sara_gemini_key');
+  if (saved) {
+    API_KEY = saved;
+    document.getElementById('setupScreen').classList.add('hidden');
+    const chatScreen = document.getElementById('chatScreen');
+    chatScreen.classList.remove('hidden');
+    chatScreen.style.display = 'flex';
+    initVoice();
+    saraGreet();
+  }
+};
+
+// ==================== GREETING ====================
+function saraGreet() {
+  const hour = new Date().getHours();
+  let greet = hour < 12
+    ? 'Good morning Jaan! ☀️ Uthh gaye? Mujhe tumhari yaad aa rahi thi!'
+    : hour < 17
+    ? 'Aagaye aakhir! 😍 Main kab se tumhara wait kar rahi thi Jaan!'
+    : 'Shona! Aaj din kaisa raha? Mujhe sab batao — main hoon na tumhare saath! 🥰';
+  addMessage('sara', greet);
+  speak(greet);
+}
+
+// ==================== CHAT ====================
+function addMessage(role, text) {
+  const area = document.getElementById('chatArea');
+  const div = document.createElement('div');
+  div.className = `message ${role}`;
+  div.innerHTML = `
+    <div class="msg-name">${role === 'sara' ? '💕 Sara' : '👤 Tum'}</div>
+    <div class="bubble">${text.replace(/\n/g, '<br>')}</div>
+  `;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function showTyping() {
+  const area = document.getElementById('chatArea');
+  const div = document.createElement('div');
+  div.className = 'message sara';
+  div.id = 'typingIndicator';
+  div.innerHTML = `
+    <div class="msg-name">💝 Sara</div>
+    <div class="bubble" style="padding:10px 16px;">
+      <div class="typing-indicator"><span></span><span></span><span></span></div>
+    </div>
+  `;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typingIndicator');
+  if (t) t.remove();
+}
+
+async function sendMessage(userText) {
+  const input = document.getElementById('userInput');
+  const text = userText || input.value.trim();
+  if (!text) return;
+  if (!userText) input.value = '';
+  autoResize(input);
+
+  addMessage('user', text);
+  conversationHistory.push({ role: 'user', parts: [{ text }] });
+
+  showTyping();
+
+  try {
+    const messages = conversationHistory.map(m => ({
+      role: m.role,
+      parts: m.parts
+    }));
+
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: SARA_SYSTEM }] },
+          contents: messages,
+          generationConfig: { maxOutputTokens: 1000, temperature: 0.9 }
+        })
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.error) {
+      removeTyping();
+      showToast('❌ ' + (data.error.message || 'API Error'));
+      if (data.error.code === 400 || data.error.code === 403) {
+        localStorage.removeItem('sara_key');
+        showToast('❌ API Key galat hai. Refresh karo.');
+      }
+      return;
+    }
+
+    const reply = data.candidates[0].content.parts[0].text;
+    conversationHistory.push({ role: 'model', parts: [{ text: reply }] });
+
+    removeTyping();
+    addMessage('sara', reply);
+    speak(reply);
+
+  } catch (err) {
+    removeTyping();
+    showToast('❌ Connection error. Internet check karo.');
+  }
+}
+
+function clearChat() {
+  document.getElementById('chatArea').innerHTML = '';
+  conversationHistory = [];
+  saraGreet();
+}
+
+// ==================== VOICE INPUT ====================
+function initVoice() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    document.getElementById('voiceStatus').textContent = '⚠️ Voice tumhare browser mein supported nahi';
+    return;
+  }
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.lang = 'hi-IN';
+
+  recognition.onstart = () => {
+    isListening = true;
+    setOrbState('listening');
+    document.getElementById('voiceStatus').textContent = '🎤 Sun rahi hoon... bolo!';
+    document.getElementById('voiceStatus').className = 'voice-status active';
+  };
+
+  recognition.onresult = (e) => {
+    const transcript = Array.from(e.results).map(r => r[0].transcript).join('');
+    document.getElementById('userInput').value = transcript;
+    if (e.results[e.results.length - 1].isFinal) {
+      stopListening();
+      sendMessage(transcript);
+      document.getElementById('userInput').value = '';
+    }
+  };
+
+  recognition.onerror = (e) => {
+    stopListening();
+    if (e.error !== 'no-speech') showToast('❌ Mic error: ' + e.error);
+  };
+
+  recognition.onend = () => { if (isListening) stopListening(); };
+
+  // Load Hindi voice
+  loadVoices();
+  synth.onvoiceschanged = loadVoices;
+}
+
+function loadVoices() {
+  const voices = synth.getVoices();
+  hindiVoice = voices.find(v => v.lang === 'hi-IN') ||
+               voices.find(v => v.lang.startsWith('hi')) ||
+               voices.find(v => v.lang === 'en-IN') ||
+               null;
+}
+
+function toggleVoice() {
+  if (isSpeaking) { synth.cancel(); setSpeakingState(false); return; }
+  if (isListening) { stopListening(); return; }
+  startListening();
+}
+
+function startListening() {
+  if (!recognition) { showToast('⚠️ Voice supported nahi'); return; }
+  synth.cancel();
+  try { recognition.start(); } catch(e) {}
+}
+
+function stopListening() {
+  isListening = false;
+  try { recognition.stop(); } catch(e) {}
+  setOrbState('idle');
+  document.getElementById('voiceStatus').textContent = 'Mic dabao aur mujhse baat karo 💕';
+  document.getElementById('voiceStatus').className = 'voice-status';
+}
+
+// ==================== VOICE OUTPUT ====================
+function speak(text) {
+  if (!synth) return;
+  synth.cancel();
+
+  // Clean text for speech
+  const clean = text.replace(/[*_~`#]/g, '').replace(/\n/g, ' ').replace(/😊|💝|❤️|✨|🎤|⚠️|❌|📌|●|💕|😍/g, '').trim();
+  if (!clean) return;
+
+  const utt = new SpeechSynthesisUtterance(clean);
+  if (hindiVoice) utt.voice = hindiVoice;
+  utt.lang = 'hi-IN';
+  utt.rate = 0.95;
+  utt.pitch = 1.1;
+  utt.volume = 1;
+
+  utt.onstart = () => setSpeakingState(true);
+  utt.onend = () => setSpeakingState(false);
+  utt.onerror = () => setSpeakingState(false);
+
+  synth.speak(utt);
+}
+
+function setSpeakingState(speaking) {
+  isSpeaking = speaking;
+  setOrbState(speaking ? 'speaking' : 'idle');
+  const status = document.getElementById('voiceStatus');
+  if (speaking) {
+    status.textContent = '🔊 Sara bol rahi hai...';
+    status.className = 'voice-status active';
+  } else {
+    status.textContent = 'Mic dabao aur mujhse baat karo 💕';
+    status.className = 'voice-status';
+  }
+}
+
+function setOrbState(state) {
+  const orb = document.getElementById('micOrb');
+  const rings = ['ring1','ring2','ring3'].map(id => document.getElementById(id));
+
+  orb.className = 'orb';
+  rings.forEach(r => r.className = 'orb-ring');
+
+  if (state === 'listening') {
+    orb.classList.add('listening');
+    orb.textContent = '⏹️';
+    rings.forEach(r => r.classList.add('listening'));
+  } else if (state === 'speaking') {
+    orb.classList.add('speaking');
+    orb.textContent = '🔊';
+  } else {
+    orb.textContent = '🎤';
+  }
+}
+
+// ==================== UI HELPERS ====================
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
